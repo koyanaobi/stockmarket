@@ -70,7 +70,7 @@ def top_api():
             top.loc[len(top.index)] = [index, err, cri]
     top = top.sort_values(by=['Critical', 'Error'], ascending=[True, True])
     top = top.head(10)
-    lst = top['Company'].values.tolist()
+    lst = top.values.tolist()
 
     # Return a response
     return jsonify({'result': lst})
