@@ -38,6 +38,7 @@ class Stock_Metric:
         new_df['Sales -'] = new_df['Sales -'].str.replace(',', '')
         new_df['Sales -'] = pd.to_numeric(new_df['Sales -'])
         met = {}
+        met['Margin'] = 10
 
         # Calculating CAGR from available data
         if len(new_df) < 10:
@@ -69,6 +70,7 @@ class Stock_Metric:
         dte = df.iloc[0, 9]
         dte = float(dte)
         met = {}
+        met['Margin'] = 0.5
 
         # Checking if Debt to Equity ratio qualifies
         met['Debt to Equity Ratio'] = dte
@@ -91,6 +93,7 @@ class Stock_Metric:
         new_df['Net Income'] = new_df['Sales -'] - new_df['Expenses -']
         new_df['ROA'] = (new_df['Net Income'] / new_df['Total Assets']) * 100
         met = {}
+        met['Margin'] = 5
 
         # Checking for year-wise Return on Assets
         lst = []
@@ -113,6 +116,7 @@ class Stock_Metric:
         # Extracting necessary data from Top Ratios
         itr = df.iloc[0, 11]
         met = {}
+        met['Margin'] = [5, 10]
         if itr == '':
             itr = 0
         else:
@@ -140,6 +144,7 @@ class Stock_Metric:
         ml = str(ml)
         ml = ml.replace(',', '')
         ml = float(ml)
+        met['Margin'] = 'Cash Conversion Cycle of Market Leader'
 
         # Comparing Cash Conversion Cycles
         met['Cash Conversion Cycle of Company'] = ccc
@@ -166,6 +171,7 @@ class Stock_Metric:
         new_df['EPS_Growth_Rate'] = (new_df['Difference in EPS'] / new_df['EPS in Rs'].shift(1)) * 100
         new_df.fillna(0, inplace = True)
         met = {}
+        met['Margin'] = 25
 
         #Checking for year-wise Earnings per Share
         year_count = 0
@@ -191,6 +197,7 @@ class Stock_Metric:
         ocf = ocf.replace(',', '')
         ocf = float(ocf)
         met = {}
+        met['Margin'] = 'Net Income for last 3 years'
         met['Operating Cash Flow for last 3 years'] = ocf
 
         new_df = df1[['Sales -', 'Expenses -']]
@@ -218,6 +225,7 @@ class Stock_Metric:
         new_df['ROCE %'] = pd.to_numeric(new_df['ROCE %'])
         new_df.fillna(0, inplace=True)
         met = {}
+        met['Margin'] = 15
 
         if len(new_df) < 10:
             met['10 years of data'] = 'Not available'
@@ -255,6 +263,7 @@ class Stock_Metric:
         new_df['Cash from Investing Activity -'] = pd.to_numeric(new_df['Cash from Investing Activity -'])
         new_df['FCF'] = new_df['Cash from Operating Activity -'] + new_df['Cash from Investing Activity -']
         met = {}
+        met['Margin'] = 0
 
         year_count = 0
         lst = []
@@ -274,6 +283,7 @@ class Stock_Metric:
     def Intrst(self, df, a):
         icr = df.iloc[0, 10]
         met = {}
+        met['Margin'] = [24, 100]
         if icr == '':
             icr = 0
         else:
@@ -302,6 +312,7 @@ class Stock_Metric:
         std = new_df['CFO %'].std()
         new_df['CFO_Zscore'] = (new_df['CFO %'] - mean) / std
         met = {}
+        met['Margin'] = [-1, 1]
 
         year_count = 0
         lst = []
@@ -334,6 +345,7 @@ class Stock_Metric:
         std = new_df['Depreciation Growth Rate'].std()
         new_df['Depreciation_Zscore'] = (new_df['Depreciation Growth Rate'] - mean) / std
         met = {}
+        met['Margin'] = [-2, 2]
 
         year_count = 0
         lst = []
@@ -362,6 +374,7 @@ class Stock_Metric:
         std = new_df['Difference'].std()
         new_df['Reserves_Zscore'] = (new_df['Difference'] - mean) / std
         met = {}
+        met['Margin'] = [-2, 2]
 
         year_count = 0
         lst = []
@@ -390,6 +403,7 @@ class Stock_Metric:
         std = new_df['Difference'].std()
         new_df['Interest_Zscore'] = (new_df['Difference'] - mean) / std
         met = {}
+        met['Margin'] = [-1, 1]
 
         year_count = 0
         lst = []
@@ -422,6 +436,7 @@ class Stock_Metric:
 
         liab = (cont / worth) * 100
         met = {}
+        met['Margin'] = 25
 
         if liab > 25:
             met['Contingent Liability metric'] = 'Fail'
@@ -438,6 +453,7 @@ class Stock_Metric:
         new_df['Gross Block'] = pd.to_numeric(new_df['Gross Block'])
         new_df['Ratios'] = new_df['CWIP'] / new_df['Gross Block']
         met = {}
+        met['Margin'] = [0.05, 0.75]
 
         year_count = 0
         lst1 = []
