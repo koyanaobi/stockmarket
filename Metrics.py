@@ -96,14 +96,13 @@ class Stock_Metric:
         met['Margin'] = 5
 
         # Checking for year-wise Return on Assets
-        lst = []
+        lst = {}
         year_count = 0
         for row in new_df.itertuples():
+            lst[row.Index] = row.ROA
             if row.ROA < 5:
                 year_count = year_count + 1
-                lst.append(row.Index)
-        if len(lst) != 0:
-            met['Years with Alarming Returns on Assets'] = lst
+        met['Year-wise Return on Assets'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
             met['Return on Assets metric'] = 'Fail'
@@ -175,13 +174,12 @@ class Stock_Metric:
 
         #Checking for year-wise Earnings per Share
         year_count = 0
-        lst = []
+        lst = {}
         for row in new_df.itertuples():
+            lst[row.Index] = row.EPS_Growth_Rate
             if row.EPS_Growth_Rate < 25:
                 year_count = year_count + 1
-                lst.append(row.Index)
-        if len(lst) != 0:
-            met['Years with alarming EPS Growth Rate'] = lst
+        met['Year-wise EPS Growth Rate'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
             met['Earnings per Share metric'] = 'Fail'
@@ -266,13 +264,12 @@ class Stock_Metric:
         met['Margin'] = 0
 
         year_count = 0
-        lst = []
+        lst = {}
         for row in new_df.itertuples():
+            lst[row.Index] = row.FCF
             if row.FCF < 0:
                 year_count = year_count + 1
-                lst.append(row.Index)
-        if len(lst) != 0:
-            met['Years with negative Free Cash Flow'] = lst
+        met['Year-wise Free Cash Flow'] = lst
         if year_count > 0:
             met['Free Cash Flow metric'] = 'Fail'
         else:
@@ -315,13 +312,12 @@ class Stock_Metric:
         met['Margin'] = [-1, 1]
 
         year_count = 0
-        lst = []
+        lst = {}
         for row in new_df.itertuples():
+            lst[row.Index] = row.CFO_Zscore
             if row.CFO_Zscore < -1 or row.CFO_Zscore > 1:
                 year_count = year_count + 1
-                lst.append(row.Index)
-        if len(lst) != 0:
-            met['Year with Alarming CFO%'] = lst
+        met['Year-wise CFO Z-Score'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
             met['CFO as % of EBITDA metric'] = 'Fail'
@@ -348,13 +344,12 @@ class Stock_Metric:
         met['Margin'] = [-2, 2]
 
         year_count = 0
-        lst = []
+        lst = {}
         for row in new_df.itertuples():
+            lst[row.Index] = row.Depreciation_Zscore
             if row.Depreciation_Zscore < -2 or row.Depreciation_Zscore > 2:
                 year_count = year_count + 1
-                lst.append(row.Index)
-        if len(lst) != 0:
-            met['Year with Alarming Changes in Depreciation %'] = lst
+        met['Year-wise Depreciation Z-Score'] = lst
         if year_count > 0:
             met['Changes in Depreciation metric'] = 'Fail'
         else:
@@ -377,13 +372,12 @@ class Stock_Metric:
         met['Margin'] = [-2, 2]
 
         year_count = 0
-        lst = []
+        lst = {}
         for row in new_df.itertuples():
+            lst[row.Index] = row.Reserves_Zscore
             if row.Reserves_Zscore < -2 or row.Reserves_Zscore > 2:
                 year_count = year_count + 1
-                lst.append(row.Index)
-        if len(lst) != 0:
-            met['Year with Alarming Changes in Reserves'] = lst
+        met['Year-wise Reserves Z-Score'] = lst
         if year_count > 0:
             met['Changes in Reserve metric'] = 'Fail'
         else:
@@ -406,13 +400,12 @@ class Stock_Metric:
         met['Margin'] = [-1, 1]
 
         year_count = 0
-        lst = []
+        lst = {}
         for row in new_df.itertuples():
+            lst[row.Index] = row.Interest_Zscore
             if row.Interest_Zscore < -1 or row.Interest_Zscore > 1:
                 year_count = year_count + 1
-                lst.append(row.Index)
-        if list(lst) != 0:
-            met['Year with Alarming Changes in Interest'] = lst
+        met['Year-wise Interest Z-Score'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
             met['Changes in Interest metric'] = 'Fail'
@@ -456,19 +449,14 @@ class Stock_Metric:
         met['Margin'] = [0.05, 0.75]
 
         year_count = 0
-        lst1 = []
-        lst2 = []
+        lst = {}
         for row in new_df.itertuples():
+            lst[row.Index] = row.Ratios
             if row.Ratios < 0.05:
                 year_count = year_count + 1
-                lst1.append(row.Index)
             elif row.Ratios > 0.75:
                 year_count = year_count + 1
-                lst2.append(row.Index)
-        if len(lst1) != 0:
-            met['Year with Alarming Decrease in CWIP to Gross Block Ratios'] = lst1
-        if len(lst2) != 0:
-            met['Year with Alarming Increase in CWIP to Gross Block Ratios'] = lst2
+        met['Year-wise CWIP TO Gross Block Ratios'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
             met['CWIP to Gross Block metric'] = 'Fail'
