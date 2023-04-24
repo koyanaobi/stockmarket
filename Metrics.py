@@ -49,9 +49,9 @@ class Stock_Metric:
             cagr = (pow((ev / bv), (1 / n)) - 1) * 100
             met['Compounded Annual Growth Rate for Revenue'] = cagr
             if cagr < 10:
-                met['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
+                met['Impact'] = 'Fail'
             else:
-                met['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+                met['Impact'] = 'Pass'
         else:
             n = 10
             ev = new_df.iloc[-1, 0]
@@ -59,9 +59,9 @@ class Stock_Metric:
             cagr = (pow((ev / bv), (1 / n)) - 1) * 100
             met['Compounded Annual Growth Rate for Revenue'] = cagr
             if cagr < 10:
-                met['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
+                met['Impact'] = 'Fail'
             else:
-                met['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+                met['Impact'] = 'Pass'
         a['Revenue CAGR'] = met
     
     ## Debt to Equity Ratio
@@ -75,9 +75,9 @@ class Stock_Metric:
         # Checking if Debt to Equity ratio qualifies
         met['Debt to Equity Ratio'] = dte
         if dte > 0.5:
-            met['Debt to Equity Ratio metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Debt to Equity Ratio metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Debt to Equity Ratio'] = met
 
     ## Return on Assets
@@ -105,9 +105,9 @@ class Stock_Metric:
         met['Year-wise Return on Assets'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            met['Return on Assets metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Return on Assets metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Return on Assets'] = met
 
     ## Inventory Turnover Ratio
@@ -126,9 +126,9 @@ class Stock_Metric:
         if itr == 0:
             met['Inventory Turnover Ratio metric'] = 'Not enough data!'
         elif itr < 5 or itr > 10:
-            met['Inventory Turnover Ratio metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Inventory Turnover Ratio metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Inventory Turnover Ratio'] = met
 
     ## Cash Conversion Cycle
@@ -150,9 +150,9 @@ class Stock_Metric:
         met['Cash Conversion Cycle of Market Leader'] = ml
         
         if ccc > ml:
-            met['Cash Conversion Cycle'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Cash Conversion Cycle'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Cash Conversion Cycle'] = met
 
     ## Earnings per Share
@@ -182,9 +182,9 @@ class Stock_Metric:
         met['Year-wise EPS Growth Rate'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            met['Earnings per Share metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Earnings per Share metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Earnings per Share'] = met
 
     ## Operating Cash Flow
@@ -211,9 +211,9 @@ class Stock_Metric:
         met['Net Income for last 3 years'] = net_incm
         
         if ocf < net_incm:
-            met['Operating Cash Flow'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Operating Cash Flow'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Operating Cash Flow'] = met
 
     ## CAGR for ROCE
@@ -237,9 +237,9 @@ class Stock_Metric:
             cagr = (pow((ev / bv), (1 / n)) - 1) * 100
             met['Compounded Annual Growth Rate for Revenue'] = cagr
             if cagr < 15:
-                met['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
+                met['Impact'] = 'Fail'
             else:
-                met['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+                met['Impact'] = 'Pass'
         else:
             n = 10
             ev = new_df.iloc[-1, 0]
@@ -247,9 +247,9 @@ class Stock_Metric:
             cagr = (pow((ev / bv), (1 / n)) - 1) * 100
             met['Compounded Annual Growth Rate for Revenue'] = cagr
             if cagr < 15:
-                met['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
+                met['Impact'] = 'Fail'
             else:
-                met['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+                met['Impact'] = 'Pass'
         a['ROCE'] = met
 
     ## Free Cash Flow
@@ -271,9 +271,9 @@ class Stock_Metric:
                 year_count = year_count + 1
         met['Year-wise Free Cash Flow'] = lst
         if year_count > 0:
-            met['Free Cash Flow metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Free Cash Flow metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Free Cash Flow'] = met
 
     ## Interest Coverage Ratio
@@ -288,9 +288,9 @@ class Stock_Metric:
 
         met['Interest Coverage Ratio'] = icr
         if icr < 24 or icr > 100:
-            met['Interest Coverage Ratio metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Interest Coverage Ratio metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Interest Coverage Ratio'] = met
 
     ## CFO as % of EBITDA
@@ -320,9 +320,9 @@ class Stock_Metric:
         met['Year-wise CFO Z-Score'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            met['CFO as % of EBITDA metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['CFO as % of EBITDA metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['CFO'] = met
 
 
@@ -351,9 +351,9 @@ class Stock_Metric:
                 year_count = year_count + 1
         met['Year-wise Depreciation Z-Score'] = lst
         if year_count > 0:
-            met['Changes in Depreciation metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Changes in Depreciation metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Depreciation Rates'] = met
 
 
@@ -379,9 +379,9 @@ class Stock_Metric:
                 year_count = year_count + 1
         met['Year-wise Reserves Z-Score'] = lst
         if year_count > 0:
-            met['Changes in Reserve metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Changes in Reserve metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Changes in Reserves'] = met
 
 
@@ -408,9 +408,9 @@ class Stock_Metric:
         met['Year-wise Interest Z-Score'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            met['Changes in Interest metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Changes in Interest metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Yields on Cash'] = met
 
 
@@ -432,9 +432,9 @@ class Stock_Metric:
         met['Margin'] = 25
 
         if liab > 25:
-            met['Contingent Liability metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['Contingent Liability metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['Contingent Liabilities'] = met
 
     ## CWIP to Gross Block
@@ -459,9 +459,9 @@ class Stock_Metric:
         met['Year-wise CWIP TO Gross Block Ratios'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            met['CWIP to Gross Block metric'] = 'Fail'
+            met['Impact'] = 'Fail'
         else:
-            met['CWIP to Gross Block metric'] = 'Pass'
+            met['Impact'] = 'Pass'
         a['CWIP'] = met
 
 
