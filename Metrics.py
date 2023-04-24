@@ -37,42 +37,46 @@ class Stock_Metric:
         new_df = df[['Sales -']]
         new_df['Sales -'] = new_df['Sales -'].str.replace(',', '')
         new_df['Sales -'] = pd.to_numeric(new_df['Sales -'])
+        met = {}
 
         # Calculating CAGR from available data
         if len(new_df) < 10:
-            a['10 years of data'] = 'Not available'
+            met['10 years of data'] = 'Not available'
             n = len(new_df)
             ev = new_df.iloc[-1, 0]
             bv = new_df.iloc[0, 0]
             cagr = (pow((ev / bv), (1 / n)) - 1) * 100
-            a['Compounded Annual Growth Rate for Revenue'] = cagr
+            met['Compounded Annual Growth Rate for Revenue'] = cagr
             if cagr < 10:
-                a['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
+                met['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
             else:
-                a['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+                met['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
         else:
             n = 10
             ev = new_df.iloc[-1, 0]
             bv = new_df.iloc[-10, 0]
             cagr = (pow((ev / bv), (1 / n)) - 1) * 100
-            a['Compounded Annual Growth Rate for Revenue'] = cagr
+            met['Compounded Annual Growth Rate for Revenue'] = cagr
             if cagr < 10:
-                a['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
+                met['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
             else:
-                a['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+                met['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+        a['Revenue CAGR'] = met
     
     ## Debt to Equity Ratio
     def Debt_Eq(self, df, a):
         # Extracting necessary data from Top Ratios
         dte = df.iloc[0, 9]
         dte = float(dte)
+        met = {}
 
         # Checking if Debt to Equity ratio qualifies
-        a['Debt to Equity Ratio'] = dte
+        met['Debt to Equity Ratio'] = dte
         if dte > 0.5:
-            a['Debt to Equity Ratio metric'] = 'Fail'
+            met['Debt to Equity Ratio metric'] = 'Fail'
         else:
-            a['Debt to Equity Ratio metric'] = 'Pass'
+            met['Debt to Equity Ratio metric'] = 'Pass'
+        a['Debt to Equity Ratio'] = met
 
     ## Return on Assets
     def ROA(self, df, a):
@@ -86,6 +90,7 @@ class Stock_Metric:
         new_df['Total Assets'] = pd.to_numeric(new_df['Total Assets'])
         new_df['Net Income'] = new_df['Sales -'] - new_df['Expenses -']
         new_df['ROA'] = (new_df['Net Income'] / new_df['Total Assets']) * 100
+        met = {}
 
         # Checking for year-wise Return on Assets
         lst = []
@@ -95,34 +100,38 @@ class Stock_Metric:
                 year_count = year_count + 1
                 lst.append(row.Index)
         if len(lst) != 0:
-            a['Years with Alarming Returns on Assets'] = lst
+            met['Years with Alarming Returns on Assets'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            a['Return on Assets metric'] = 'Fail'
+            met['Return on Assets metric'] = 'Fail'
         else:
-            a['Return on Assets metric'] = 'Pass'
+            met['Return on Assets metric'] = 'Pass'
+        a['Return on Assets'] = met
 
     ## Inventory Turnover Ratio
     def Invt(self, df, a):
         # Extracting necessary data from Top Ratios
         itr = df.iloc[0, 11]
+        met = {}
         if itr == '':
             itr = 0
         else:
             itr = float(itr)
 
         # Checking if Inventory Turnover Ratio qualifies threshold
-        a['Inventory Turnover Ratio'] = itr
+        met['Inventory Turnover Ratio'] = itr
         if itr == 0:
-            a['Inventory Turnover Ratio metric'] = 'Not enough data!'
+            met['Inventory Turnover Ratio metric'] = 'Not enough data!'
         elif itr < 5 or itr > 10:
-            a['Inventory Turnover Ratio metric'] = 'Fail'
+            met['Inventory Turnover Ratio metric'] = 'Fail'
         else:
-            a['Inventory Turnover Ratio metric'] = 'Pass'
+            met['Inventory Turnover Ratio metric'] = 'Pass'
+        a['Inventory Turnover Ratio'] = met
 
     ## Cash Conversion Cycle
     def CCC(self, df, df1, a):
         # Extracting necessary data from Top Ratios and Market Leader
+        met = {}
         ccc = df.iloc[0, 12]
         ccc = str(ccc)
         ccc = ccc.replace(',', '')
@@ -133,13 +142,14 @@ class Stock_Metric:
         ml = float(ml)
 
         # Comparing Cash Conversion Cycles
-        a['Cash Conversion Cycle of Company'] = ccc
-        a['Cash Conversion Cycle of Market Leader'] = ml
+        met['Cash Conversion Cycle of Company'] = ccc
+        met['Cash Conversion Cycle of Market Leader'] = ml
         
         if ccc > ml:
-            a['Cash Conversion Cycle'] = 'Fail'
+            met['Cash Conversion Cycle'] = 'Fail'
         else:
-            a['Cash Conversion Cycle'] = 'Pass'
+            met['Cash Conversion Cycle'] = 'Pass'
+        a['Cash Conversion Cycle'] = met
 
     ## Earnings per Share
     def EPS(self, df, a):
@@ -155,6 +165,7 @@ class Stock_Metric:
         new_df.fillna(0, inplace = True)
         new_df['EPS_Growth_Rate'] = (new_df['Difference in EPS'] / new_df['EPS in Rs'].shift(1)) * 100
         new_df.fillna(0, inplace = True)
+        met = {}
 
         #Checking for year-wise Earnings per Share
         year_count = 0
@@ -164,12 +175,13 @@ class Stock_Metric:
                 year_count = year_count + 1
                 lst.append(row.Index)
         if len(lst) != 0:
-            a['Years with alarming EPS Growth Rate'] = lst
+            met['Years with alarming EPS Growth Rate'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            a['Earnings per Share metric'] = 'Fail'
+            met['Earnings per Share metric'] = 'Fail'
         else:
-            a['Earnings per Share metric'] = 'Pass'
+            met['Earnings per Share metric'] = 'Pass'
+        a['Earnings per Share'] = met
 
     ## Operating Cash Flow
     def OCF(self, df, df1, a):
@@ -178,7 +190,8 @@ class Stock_Metric:
         ocf = ocf.replace(' Cr.', '')
         ocf = ocf.replace(',', '')
         ocf = float(ocf)
-        a['Operating Cash Flow for last 3 years'] = ocf
+        met = {}
+        met['Operating Cash Flow for last 3 years'] = ocf
 
         new_df = df1[['Sales -', 'Expenses -']]
         new_df['Sales -'] = new_df['Sales -'].str.replace(',', '')
@@ -190,12 +203,13 @@ class Stock_Metric:
         last_three = new_df['Net Income'].tail(3)
         net_incm = last_three.mean()
 
-        a['Net Income for last 3 years'] = net_incm
+        met['Net Income for last 3 years'] = net_incm
         
         if ocf < net_incm:
-            a['Operating Cash Flow'] = 'Fail'
+            met['Operating Cash Flow'] = 'Fail'
         else:
-            a['Operating Cash Flow'] = 'Pass'
+            met['Operating Cash Flow'] = 'Pass'
+        a['Operating Cash Flow'] = met
 
     ## CAGR for ROCE
     def ROCE(self, df, a):
@@ -203,9 +217,10 @@ class Stock_Metric:
         new_df['ROCE %'] = new_df['ROCE %'].str.replace('%', '')
         new_df['ROCE %'] = pd.to_numeric(new_df['ROCE %'])
         new_df.fillna(0, inplace=True)
+        met = {}
 
         if len(new_df) < 10:
-            a['10 years of data'] = 'Not available'
+            met['10 years of data'] = 'Not available'
             ev = new_df.iloc[-1, 0]
             if new_df.iloc[0, 0] == 0:
                 n = len(new_df) - 1
@@ -214,21 +229,22 @@ class Stock_Metric:
                 n = len(new_df)
                 bv = new_df.iloc[0, 0]
             cagr = (pow((ev / bv), (1 / n)) - 1) * 100
-            a['Compounded Annual Growth Rate for Revenue'] = cagr
+            met['Compounded Annual Growth Rate for Revenue'] = cagr
             if cagr < 15:
-                a['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
+                met['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
             else:
-                a['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+                met['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
         else:
             n = 10
             ev = new_df.iloc[-1, 0]
             bv = new_df.iloc[-10, 0]
             cagr = (pow((ev / bv), (1 / n)) - 1) * 100
-            a['Compounded Annual Growth Rate for Revenue'] = cagr
+            met['Compounded Annual Growth Rate for Revenue'] = cagr
             if cagr < 15:
-                a['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
+                met['Compounded Annual Growth Rate for Revenue metric'] = 'Fail'
             else:
-                a['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+                met['Compounded Annual Growth Rate for Revenue metric'] = 'Pass'
+        a['ROCE'] = met
 
     ## Free Cash Flow
     def FCF(self, df, a):
@@ -238,6 +254,7 @@ class Stock_Metric:
         new_df['Cash from Investing Activity -'] = new_df['Cash from Investing Activity -'].str.replace(',', '')
         new_df['Cash from Investing Activity -'] = pd.to_numeric(new_df['Cash from Investing Activity -'])
         new_df['FCF'] = new_df['Cash from Operating Activity -'] + new_df['Cash from Investing Activity -']
+        met = {}
 
         year_count = 0
         lst = []
@@ -246,25 +263,28 @@ class Stock_Metric:
                 year_count = year_count + 1
                 lst.append(row.Index)
         if len(lst) != 0:
-            a['Years with negative Free Cash Flow'] = lst
+            met['Years with negative Free Cash Flow'] = lst
         if year_count > 0:
-            a['Free Cash Flow metric'] = 'Fail'
+            met['Free Cash Flow metric'] = 'Fail'
         else:
-            a['Free Cash Flow metric'] = 'Pass'
+            met['Free Cash Flow metric'] = 'Pass'
+        a['Free Cash Flow'] = met
 
     ## Interest Coverage Ratio
     def Intrst(self, df, a):
         icr = df.iloc[0, 10]
+        met = {}
         if icr == '':
             icr = 0
         else:
             icr = float(icr)
 
-        a['Interest Coverage Ratio'] = icr
+        met['Interest Coverage Ratio'] = icr
         if icr < 24 or icr > 100:
-            a['Interest Coverage Ratio metric'] = 'Fail'
+            met['Interest Coverage Ratio metric'] = 'Fail'
         else:
-            a['Interest Coverage Ratio metric'] = 'Pass'
+            met['Interest Coverage Ratio metric'] = 'Pass'
+        a['Interest Coverage Ratio'] = met
 
     ## CFO as % of EBITDA
     def CFO(self, df, a):
@@ -281,6 +301,7 @@ class Stock_Metric:
         mean = new_df['CFO %'].mean()
         std = new_df['CFO %'].std()
         new_df['CFO_Zscore'] = (new_df['CFO %'] - mean) / std
+        met = {}
 
         year_count = 0
         lst = []
@@ -289,12 +310,13 @@ class Stock_Metric:
                 year_count = year_count + 1
                 lst.append(row.Index)
         if len(lst) != 0:
-            a['Year with Alarming CFO%'] = lst
+            met['Year with Alarming CFO%'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            a['CFO as % of EBITDA metric'] = 'Fail'
+            met['CFO as % of EBITDA metric'] = 'Fail'
         else:
-            a['CFO as % of EBITDA metric'] = 'Pass'
+            met['CFO as % of EBITDA metric'] = 'Pass'
+        a['CFO'] = met
 
 
     ## Depreciation Rates
@@ -311,6 +333,7 @@ class Stock_Metric:
         mean = new_df['Depreciation Growth Rate'].mean()
         std = new_df['Depreciation Growth Rate'].std()
         new_df['Depreciation_Zscore'] = (new_df['Depreciation Growth Rate'] - mean) / std
+        met = {}
 
         year_count = 0
         lst = []
@@ -319,11 +342,12 @@ class Stock_Metric:
                 year_count = year_count + 1
                 lst.append(row.Index)
         if len(lst) != 0:
-            a['Year with Alarming Changes in Depreciation %'] = lst
+            met['Year with Alarming Changes in Depreciation %'] = lst
         if year_count > 0:
-            a['Changes in Depreciation metric'] = 'Fail'
+            met['Changes in Depreciation metric'] = 'Fail'
         else:
-            a['Changes in Depreciation metric'] = 'Pass'
+            met['Changes in Depreciation metric'] = 'Pass'
+        a['Depreciation Rates'] = met
 
 
     ## Change in Reserves
@@ -337,6 +361,7 @@ class Stock_Metric:
         mean = new_df['Difference'].mean()
         std = new_df['Difference'].std()
         new_df['Reserves_Zscore'] = (new_df['Difference'] - mean) / std
+        met = {}
 
         year_count = 0
         lst = []
@@ -345,11 +370,12 @@ class Stock_Metric:
                 year_count = year_count + 1
                 lst.append(row.Index)
         if len(lst) != 0:
-            a['Year with Alarming Changes in Reserves'] = lst
+            met['Year with Alarming Changes in Reserves'] = lst
         if year_count > 0:
-            a['Changes in Reserve metric'] = 'Fail'
+            met['Changes in Reserve metric'] = 'Fail'
         else:
-            a['Changes in Reserve metric'] = 'Pass'
+            met['Changes in Reserve metric'] = 'Pass'
+        a['Changes in Reserves'] = met
 
 
     ## Yields on Cash and Cash Equivalents
@@ -363,6 +389,7 @@ class Stock_Metric:
         mean = new_df['Difference'].mean()
         std = new_df['Difference'].std()
         new_df['Interest_Zscore'] = (new_df['Difference'] - mean) / std
+        met = {}
 
         year_count = 0
         lst = []
@@ -371,12 +398,13 @@ class Stock_Metric:
                 year_count = year_count + 1
                 lst.append(row.Index)
         if list(lst) != 0:
-            a['Year with Alarming Changes in Interest'] = lst
+            met['Year with Alarming Changes in Interest'] = lst
         n = int(0.75 * len(new_df))
         if year_count > n:
-            a['Changes in Interest metric'] = 'Fail'
+            met['Changes in Interest metric'] = 'Fail'
         else:
-            a['Changes in Interest metric'] = 'Pass'
+            met['Changes in Interest metric'] = 'Pass'
+        a['Yields on Cash'] = met
 
 
     ## Contingent Liabilities as % of Net Worth
@@ -393,11 +421,13 @@ class Stock_Metric:
         worth = int(worth)
 
         liab = (cont / worth) * 100
+        met = {}
 
         if liab > 25:
-            a['Contingent Liability metric'] = 'Fail'
+            met['Contingent Liability metric'] = 'Fail'
         else:
-            a['Contingent Liability metric'] = 'Pass'
+            met['Contingent Liability metric'] = 'Pass'
+        a['Contingent Liabilities'] = met
 
     ## CWIP to Gross Block
     def CWIP(self, df, a):
@@ -407,6 +437,7 @@ class Stock_Metric:
         new_df['Gross Block'] = new_df['Gross Block'].str.replace(',', '')
         new_df['Gross Block'] = pd.to_numeric(new_df['Gross Block'])
         new_df['Ratios'] = new_df['CWIP'] / new_df['Gross Block']
+        met = {}
 
         year_count = 0
         lst1 = []
@@ -419,14 +450,15 @@ class Stock_Metric:
                 year_count = year_count + 1
                 lst2.append(row.Index)
         if len(lst1) != 0:
-            a['Year with Alarming Decrease in CWIP to Gross Block Ratios'] = lst1
+            met['Year with Alarming Decrease in CWIP to Gross Block Ratios'] = lst1
         if len(lst2) != 0:
-            a['Year with Alarming Increase in CWIP to Gross Block Ratios'] = lst2
+            met['Year with Alarming Increase in CWIP to Gross Block Ratios'] = lst2
         n = int(0.75 * len(new_df))
         if year_count > n:
-            a['CWIP to Gross Block metric'] = 'Fail'
+            met['CWIP to Gross Block metric'] = 'Fail'
         else:
-            a['CWIP to Gross Block metric'] = 'Pass'
+            met['CWIP to Gross Block metric'] = 'Pass'
+        a['CWIP'] = met
 
 
     def screener(self, lst):
