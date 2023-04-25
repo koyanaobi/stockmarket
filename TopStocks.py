@@ -41,6 +41,8 @@ class Top_Stock:
             ev = new_df.iloc[-1, 0]
             bv = new_df.iloc[0, 0]
             cagr = (pow((ev / bv), (1/n)) - 1) * 100
+            if np.isnan(cagr) == True:
+                cagr = np.nan_to_num(cagr)
             if cagr < 10:
                 a = a + 1
         else:
@@ -48,6 +50,8 @@ class Top_Stock:
             ev = new_df.iloc[-1, 0]
             bv = new_df.iloc[-10, 0]
             cagr = (pow((ev / bv), (1/n)) - 1) * 100
+            if np.isnan(cagr) == True:
+                cagr = np.nan_to_num(cagr)
             if cagr < 10:
                 a = a + 1
         return a
@@ -57,6 +61,8 @@ class Top_Stock:
         #Extracting necessary data from Top Ratios
         dte = df.iloc[0, 9]
         dte = float(dte)
+        if np.isnan(dte) == True:
+            dte = np.nan_to_num(dte)
 
         #Checking if Debt to Equity ratio qualifies
         if dte > 0.5:
@@ -75,6 +81,7 @@ class Top_Stock:
         new_df['Total Assets'] = pd.to_numeric(new_df['Total Assets'])
         new_df['Net Income'] = new_df['Sales -'] - new_df['Expenses -']
         new_df['ROA'] = (new_df['Net Income'] / new_df['Total Assets']) * 100
+        new_df['ROA'] = new_df['ROA'].fillna(0)
 
         #Checking for year-wise Return on Assets
         year_count = 0
@@ -94,6 +101,8 @@ class Top_Stock:
             itr = 0
         else:
             itr = float(itr)
+        if np.isnan(itr) == True:
+            itr = np.nan_to_num(itr)
 
         #Checking if Inventory Turnover Ratio qualifies threshold
         if itr < 5 or itr > 10:
@@ -111,6 +120,10 @@ class Top_Stock:
         ml = str(ml)
         ml = ml.replace(',', '')
         ml = float(ml)
+        if np.isnan(ccc) == True:
+            ccc = np.nan_to_num(ccc)
+        if np.isnan(ml) == True:
+            ml = np.nan_to_num(ml)
 
         #Comparing Cash Conversion Cycles
         if ccc > ml:
@@ -149,6 +162,8 @@ class Top_Stock:
         ocf = ocf.replace(' Cr.', '')
         ocf = ocf.replace(',', '')
         ocf = float(ocf)
+        if np.isnan(ocf) == True:
+            ocf = np.nan_to_num(ocf)
 
         new_df = df1[['Sales -', 'Expenses -']]
         new_df['Sales -'] = new_df['Sales -'].str.replace(',', '')
@@ -156,6 +171,7 @@ class Top_Stock:
         new_df['Expenses -'] = new_df['Expenses -'].str.replace(',', '')
         new_df['Expenses -'] = pd.to_numeric(new_df['Expenses -'])
         new_df['Net Income'] = new_df['Sales -'] - new_df['Expenses -']
+        new_df['Net Income'] = new_df['Net Income'].fillna(0)
 
         last_three = new_df['Net Income'].tail(3)
         net_incm = last_three.mean()
@@ -181,6 +197,8 @@ class Top_Stock:
                 n = len(new_df)
                 bv = new_df.iloc[0, 0]
             cagr = (pow((ev / bv), (1/n)) - 1) * 100
+            if np.isnan(cagr) == True:
+                cagr = np.nan_to_num(cagr)
             if cagr < 15:
                 a = a + 1
         else:
@@ -188,6 +206,8 @@ class Top_Stock:
             ev = new_df.iloc[-1, 0]
             bv = new_df.iloc[-10, 0]
             cagr = (pow((ev / bv), (1/n)) - 1) * 100
+            if np.isnan(cagr) == True:
+                cagr = np.nan_to_num(cagr)
             if cagr < 15:
                 a = a + 1
         return a
@@ -200,6 +220,7 @@ class Top_Stock:
         new_df['Cash from Investing Activity -'] = new_df['Cash from Investing Activity -'].str.replace(',', '')
         new_df['Cash from Investing Activity -'] = pd.to_numeric(new_df['Cash from Investing Activity -'])
         new_df['FCF'] = new_df['Cash from Operating Activity -'] + new_df['Cash from Investing Activity -']
+        new_df['FCF'] = new_df['FCF'].fillna(0)
 
         year_count = 0
         for row in new_df.itertuples():
@@ -213,6 +234,8 @@ class Top_Stock:
     def Intrst(self, df, a):
         icr = df.iloc[0, 10]
         icr = float(icr)
+        if np.isnan(icr) == True:
+            icr = np.nan_to_num(icr)
 
         if icr < 24 or icr > 100:
             a = a + 1
@@ -233,6 +256,7 @@ class Top_Stock:
         mean = new_df['CFO %'].mean()
         std = new_df['CFO %'].std()
         new_df['CFO_Zscore'] = (new_df['CFO %'] - mean) / std
+        new_df['CFO_Zscore'] = new_df['CFO_Zscore'].fillna(0)
 
         year_count = 0
         for row in new_df.itertuples():
@@ -257,6 +281,7 @@ class Top_Stock:
         mean = new_df['Depreciation Growth Rate'].mean()
         std = new_df['Depreciation Growth Rate'].std()
         new_df['Depreciation_Zscore'] = (new_df['Depreciation Growth Rate'] - mean) / std
+        new_df['Depreciation_Zscore'] = new_df['Depreciation_Zscore'].fillna(0)
 
         year_count = 0
         for row in new_df.itertuples():
@@ -338,6 +363,7 @@ class Top_Stock:
         new_df['Gross Block'] = new_df['Gross Block'].str.replace(',', '')
         new_df['Gross Block'] = pd.to_numeric(new_df['Gross Block'])
         new_df['Ratios'] = new_df['CWIP'] / new_df['Gross Block']
+        new_df['Ratios'] = new_df['Ratios'].fillna(0)
 
         year_count = 0
         for row in new_df.itertuples():
