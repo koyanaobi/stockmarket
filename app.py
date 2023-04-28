@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # coding: utf-8
 
@@ -33,7 +34,7 @@ stock_symbol = pd.read_csv('Stock Symbol List.csv', index_col = 0)
 
 app = Flask(__name__)
 
-cors = CORS(app,resources{r"*" :{"origins" :"*"}})
+cors = CORS(app, resources = {r"*" :{"origins" :"*"}})
 
 # In[6]:
 
@@ -99,5 +100,4 @@ def metric_api():
 
 if __name__ == '__main__':
     # app.run(debug = True)
-    app.run("0.0.0.0",port=port_no,debug=True)
-
+    app.run("0.0.0.0", port = 5000, debug=True)
