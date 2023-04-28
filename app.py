@@ -5,6 +5,7 @@
 
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 
 
 # In[2]:
@@ -32,6 +33,7 @@ stock_symbol = pd.read_csv('Stock Symbol List.csv', index_col = 0)
 
 app = Flask(__name__)
 
+cors = CORS(app,resources{r"*" :{"origins" :"*"}})
 
 # In[6]:
 
@@ -96,5 +98,6 @@ def metric_api():
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    # app.run(debug = True)
+    app.run("0.0.0.0",port=port_no,debug=True)
 
