@@ -78,7 +78,7 @@ def top_api():
     # Return a response
     return jsonify({'result': lst})
 
-@app.route('/api/metric', methods = ['GET'])
+@app.route('/api/metric', methods = ['POST'])
 def metric_api():
     # Get the data from the request
     data = request.get_json()["CompanyName"]
